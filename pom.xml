@@ -13,7 +13,7 @@
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-    
+
     <dependencies>
         <dependency>
             <groupId>javax</groupId>
@@ -70,6 +70,19 @@
                     </execution>
                 </executions>
             </plugin>
+            <!-- Plugin used to deploy to remote server -->
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <server>TomcatServer</server>
+                    <url>${remote.server}</url>
+                    <username>${remote.user}</username>
+                    <password>${remote.password}</password>
+                    <update>true</update>
+                </configuration>
+            </plugin>          
         </plugins>
     </build>
 
