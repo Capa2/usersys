@@ -14,11 +14,15 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "Index", urlPatterns = {""})
 public class Index extends HttpServlet {
 
-    String check = "Fail";
+    String check = "NO CHECK";
 
     public void init() throws ServletException {
-        if (System.getenv("USER").equals("dev")) {
-            check = "USER SUCCES";
+        try {
+            if (System.getenv("USER").equals("dev")) {
+                check = "USER SUCCES";
+            }
+        } catch (Exception e) {
+            check = "USER FAIL";
         }
     }
 

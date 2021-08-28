@@ -11,29 +11,34 @@ import java.sql.SQLException;
 
 public class Database {
 
-    private Connection connection;
+    private static Connection connection;
     private final String USER;
     private final String PASSWORD;
     private final String URL;
 
-    public Database(String user, String password, String url) throws ClassNotFoundException {
+    public Database(String db) {
         String deployed = System.getenv("DEPLOYED");
         if (deployed != null) {
-            // Prod: hent variabler fra setenv.sh i Tomcats bin folder
-            USER = System.getenv("JDBC_USER");
-            PASSWORD = System.getenv("JDBC_PASSWORD");
-            URL = System.getenv("JDBC_CONNECTION_STRING");
+            USER = System.getenv("USER");
+            PASSWORD = System.getenv("PW");
+            URL = System.getenv("CONNECTION_STR") + db + "?serverTimezone=CET";
         } else {
-            USER = user;
-            PASSWORD = password;
-            URL = url;
+            USER = "dev";
+            PASSWORD = "ax2";
+            URL = "jdbc:mysql://localhost:3306/" + db + "?serverTimezone=CET";
         }
-        Class.forName("com.mysql.cj.jdbc.Driver");
     }
 
-    public Connection connect() throws SQLException {
-        Connection connection = null;
-        connection = DriverManager.getConnection(URL, USER, PASSWORD);
+    public Connection connect() throws SQLException, ClassNotFoundException {
+        if ((connection == null) || connection.isClosed()) {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            connection = DriverManager.getConnection(URL, USER, PASSWORD);
+        }
         return connection;
     }
+
+    public void close() throws SQLException {
+        connection.close();
+    }
+
 }
