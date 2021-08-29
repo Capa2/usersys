@@ -13,6 +13,9 @@
     </head>
     <body>
         <h1>Hello</h1>
-        ${requestScope.check}
+
+        <c:forEach var="user" items="${requestScope.userList}" varStatus="status">
+            <p>${status.count}) ${user.fullName}</p>
+        </c:forEach>
     </body>
 </html>

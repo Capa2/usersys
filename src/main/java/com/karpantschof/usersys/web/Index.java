@@ -1,6 +1,10 @@
 package com.karpantschof.usersys.web;
 
+import com.karpantschof.usersys.business.persistence.Database;
+import com.karpantschof.usersys.business.persistence.UserMapper;
+import entities.User;
 import java.io.IOException;
+import java.util.*;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,21 +18,19 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "Index", urlPatterns = {""})
 public class Index extends HttpServlet {
 
-    String check = "NO CHECK";
+    private Database database;
+    private UserMapper userMapper;
+    private List<User> userList;
 
     public void init() throws ServletException {
-        try {
-            if (System.getenv("USER").equals("dev")) {
-                check = "USER SUCCES";
-            }
-        } catch (Exception e) {
-            check = "USER FAIL";
-        }
+        database = new Database("usersys");
+        userMapper = new UserMapper(database);
+        userList = userMapper.getUserList();
     }
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.setAttribute("check", check);
+        request.setAttribute("userList", userList);
         request.getRequestDispatcher("/index.jsp").forward(request, response);
     }
 
