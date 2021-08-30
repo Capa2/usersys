@@ -1,8 +1,9 @@
 <%--
-    Document   : index
-    Created on : Aug 28, 2021, 12:30:00 AM
+    Document   : user
+    Created on : Aug 30, 2021, 12:19:31 PM
     Author     : johan
 --%>
+
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="windows-1252"%>
 <!DOCTYPE html>
@@ -13,10 +14,7 @@
     </head>
     <body>
         <h1>Hello</h1>
-        <form action="userpage" method="post">
-            <c:forEach var="user" items="${requestScope.userList}" varStatus="status">
-                ${status.count}) <button type="submit" name="user" value="${user}">${user.fullName}</button>
-            </c:forEach>
-        </form>
+        ${requestScope.user.fullName}
     </body>
 </html>
+
